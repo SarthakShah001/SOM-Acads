@@ -33,7 +33,7 @@ void update_grid(pair<int,int>loc_neuron,vector<vector<vector<float>>> &grid,flo
                 int d=(x-i)*(x-i)+(y-j)*(y-j);
                 double t=pow(2,d);
                 grid[i][j][k]+=4.5*(grid[x][y][k]-grid[i][j][k])/d;
-                
+                grid[i][j][k]=max(min(255,int(grid[i][j][k])),0);
             }
         }
     }
@@ -64,7 +64,7 @@ int main(){
     }
     cout << endl;
     for(int i=0;i<100;i++){
-        for(int j=90;j<98;j++){
+        for(int j=50;j<58;j++){
             cout << "[";
             for(int k=0;k<3;k++){
                 cout << int(grid[i][j][k])<<",";
