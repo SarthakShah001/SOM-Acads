@@ -32,7 +32,8 @@ void update_grid(pair<int,int>loc_neuron,vector<vector<vector<float>>> &grid,flo
             for(int k=0;k<3;k++){
                 int d=(x-i)*(x-i)+(y-j)*(y-j);
                 double t=pow(2,d);
-                grid[i][j][k]+=l_r*(grid[x][y][k]-grid[i][j][k])/t;
+                grid[i][j][k]+=4.5*(grid[x][y][k]-grid[i][j][k])/d;
+                
             }
         }
     }
@@ -57,13 +58,13 @@ int main(){
         float l_r=0.1;
         update_grid(loc_neuron,grid,l_r);
         if(i>5000){
-            l_r=0.001;
+            l_r=0.01;
         }
 
     }
     cout << endl;
     for(int i=0;i<100;i++){
-        for(int j=0;j<8;j++){
+        for(int j=90;j<98;j++){
             cout << "[";
             for(int k=0;k<3;k++){
                 cout << int(grid[i][j][k])<<",";
