@@ -1,4 +1,5 @@
 #include<bits/stdc++.h>
+#include <fstream>
 using namespace std;
 float dist(vector<int> &node, vector<float> &neuron){
     int var=0;
@@ -31,8 +32,9 @@ void update_grid(pair<int,int>loc_neuron,vector<vector<vector<float>>> &grid,flo
             }
             for(int k=0;k<3;k++){
                 int d=(x-i)*(x-i)+(y-j)*(y-j);
-                double t=pow(2,d);
-                grid[i][j][k]+=4.5*(grid[x][y][k]-grid[i][j][k])/d;
+                d=d+2;
+                double t=pow(1.15,d);
+                grid[i][j][k]+=l_r*(grid[x][y][k]-grid[i][j][k])/t;
                 grid[i][j][k]=max(min(255,int(grid[i][j][k])),0);
             }
         }
@@ -41,37 +43,53 @@ void update_grid(pair<int,int>loc_neuron,vector<vector<vector<float>>> &grid,flo
 int main(){
     vector<vector<int>> dataset(10000,vector<int>(3,0));
     for(int i=0;i<dataset.size();i++){
-        for(int j=0;j<dataset[0].size();j++){
-            dataset[i][j]=rand()%256;
+        if(i<7000){
+            for(int j=0;j<dataset[0].size();j++){
+            dataset[i][j]=rand()%220+36;
+            }
         }
+        else{
+            for(int j=0;j<dataset[0].size();j++){
+            dataset[i][j]=rand()%256;
+            }
+        }
+        
     }
     vector<vector<vector<float>>> grid(100,vector<vector<float>>(100,vector<float>(3,0)));
     for(int i=0;i<100;i++){
         for(int j=0;j<100;j++){
             for(int k=0;k<3;k++){
-                grid[i][j][k]=rand()%256;
+                grid[i][j][k]=rand()%200+56;
             }
         }
     }
+    for(int j=0;j<10;j++){
     for(int i=0;i<dataset.size();i++){
         pair<int,int> loc_neuron=winning_neuron(dataset[i],grid);
         float l_r=0.1;
+        l_r=pow(0.9,i/8);
         update_grid(loc_neuron,grid,l_r);
-        if(i>5000){
-            l_r=0.01;
-        }
-
     }
-    cout << endl;
+    }
+    fstream my_file;
+	my_file.open("my_file.csv", ios::out);
+	if (!my_file) {
+		cout << "File not created!";
+	}
+	else {
+		cout << "File created successfully!";
+		
+	}
     for(int i=0;i<100;i++){
-        for(int j=50;j<58;j++){
-            cout << "[";
+        for(int j=0;j<100;j++){
+            // cout << "[";
             for(int k=0;k<3;k++){
-                cout << int(grid[i][j][k])<<",";
+                my_file << int(grid[i][j][k])<<",";
             }
-            cout << "] ";
+            // cout << "] ";
         }
-        cout <<endl;
+        my_file <<endl;
     }
+    my_file.close(); 
     return 0;
 }
