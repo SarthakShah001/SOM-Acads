@@ -33,7 +33,7 @@ void update_grid(pair<int,int>loc_neuron,vector<vector<vector<float>>> &grid,flo
             for(int k=0;k<3;k++){
                 int d=(x-i)*(x-i)+(y-j)*(y-j);
                 d=d+2;
-                double t=pow(1.15,d);
+                double t=pow(1.15,d/3);
                 grid[i][j][k]+=l_r*(grid[x][y][k]-grid[i][j][k])/t;
                 grid[i][j][k]=max(min(255,int(grid[i][j][k])),0);
             }
@@ -45,7 +45,7 @@ int main(){
     for(int i=0;i<dataset.size();i++){
         if(i<7000){
             for(int j=0;j<dataset[0].size();j++){
-            dataset[i][j]=rand()%220+36;
+            dataset[i][j]=rand()%200+56;
             }
         }
         else{
@@ -67,7 +67,7 @@ int main(){
     for(int i=0;i<dataset.size();i++){
         pair<int,int> loc_neuron=winning_neuron(dataset[i],grid);
         float l_r=0.1;
-        l_r=pow(0.9,i/8);
+        l_r=pow(0.9,i/10);
         update_grid(loc_neuron,grid,l_r);
     }
     }
